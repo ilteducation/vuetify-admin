@@ -193,6 +193,10 @@ export default {
      */
     disablePagination: Boolean,
     /**
+     * Use cursor type pagination.
+     */
+    cursorPagination: Boolean,
+    /**
      * Hide all header toolbar, so neither filters nor any create or export actions.
      */
     hideHeader: Boolean,
@@ -257,7 +261,15 @@ export default {
           this.updateQuery();
         },
       },
+      cursorPage: null,
+      lastPageSize: this.itemsPerPage,
     };
+  },
+  created() {
+    if(!this.cursorPage) {
+      this.cursorPage = new Map();
+      this.cursorPage.set(1, undefined);
+    }
   },
   async mounted() {
     await this.initFiltersFromQuery();
@@ -345,6 +357,10 @@ export default {
       /**
        * Triggered on pagination change.
        */
+      if (this.lastPageSize !== val.itemsPerPage && this.cursorPage ) {
+        this.cursorPage.clear();
+        this.lastPageSize = val.itemsPerPage;
+      }
       this.$emit("update:options", val);
     },
     currentFilter(newVal) {
@@ -463,20 +479,78 @@ export default {
         filter: this.getCurrentFilter,
       };
 
+      const getListData = async (listParams) => {
+        const res = await this.$store.dispatch(
+          `${this.resource}/getList`,
+          listParams
+        );
+        if (this.cursorPagination) {
+          let partial = res;
+          while (partial.data.length !== itemsPerPage && partial.data.cursor) {
+            const newParams = {
+              ...listParams,
+              pagination: {
+                cursor: partial.data.cursor,
+                limit: itemsPerPage - partial.data.length,
+              }
+            };
+            partial = await this.$store.dispatch(
+              `${this.resource}/getList`,
+              newParams
+            );
+            res.data.push(...partial.data);
+            res.cursor = partial.cursor;
+          }
+          res.cursor = partial.cursor;
+        }
+        return res;
+      }
+
       if (!this.disablePagination) {
-        params.pagination = {
-          page,
-          ...(!this.disableItemsPerPage && { perPage: itemsPerPage }),
-        };
+        if (this.cursorPagination) {
+          // Check if we need to load previous pages
+          if (!this.cursorPage.has(page)) {
+            let hasPageCursor = 1;
+            while (hasPageCursor < page) {
+              const listParams = {
+                ...params,
+                pagination: {
+                  cursor: this.cursorPage.get(hasPageCursor),
+                  limit: itemsPerPage,
+                }
+              }
+              const { cursor } = await getListData(listParams);
+              hasPageCursor += 1;
+              this.cursorPage.set(hasPageCursor, cursor);
+            }
+          }
+
+          params.pagination = {
+            cursor: this.cursorPage.get(page),
+            ...(!this.disableItemsPerPage && { limit: itemsPerPage }),
+          };
+        } else {
+          params.pagination = {
+            page,
+            ...(!this.disableItemsPerPage && { perPage: itemsPerPage }),
+          };
+        }
       }
 
       /**
        * Load paginated and sorted data list
        */
-      let { data, total } = await this.$store.dispatch(
-        `${this.resource}/getList`,
-        params
-      );
+      let { data, total, cursor } = await getListData(params);
+
+      // Set the cursor for fetching next page
+      if (!this.disablePagination && this.cursorPagination) {
+        if (cursor) {
+          total = page * itemsPerPage + 1;
+        } else {
+          total = (page - 1) * itemsPerPage + data.length;
+        }
+        this.cursorPage.set(page + 1, cursor);
+      }
 
       /**
        * Update state without cloning
