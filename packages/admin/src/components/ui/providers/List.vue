@@ -486,12 +486,12 @@ export default {
         );
         if (this.cursorPagination) {
           let partial = res;
-          while (partial.data.length !== itemsPerPage && partial.data.cursor) {
+          while (res.data.length < itemsPerPage && res.cursor) {
             const newParams = {
               ...listParams,
               pagination: {
-                cursor: partial.data.cursor,
-                limit: itemsPerPage - partial.data.length,
+                cursor: partial.cursor,
+                limit: itemsPerPage - res.data.length,
               }
             };
             partial = await this.$store.dispatch(
@@ -501,7 +501,6 @@ export default {
             res.data.push(...partial.data);
             res.cursor = partial.cursor;
           }
-          res.cursor = partial.cursor;
         }
         return res;
       }
