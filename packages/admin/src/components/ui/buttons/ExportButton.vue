@@ -37,6 +37,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    cursorPagination: {
+      type: Boolean,
+      default: false,
+    }
   },
   methods: {
     async onExport() {
@@ -55,13 +59,35 @@ export default {
         });
       }
 
-      let { data } = await this.$store.dispatch(
-        `${this.resource}/getList`,
-        params
-      );
+      let allData = [];
+      let hasMoreData = true;
+      if (this.cursorPagination) {
+        params.pagination = {
+          limit: 50
+        };
+      } else {
+        params.pagination = {
+          perPage: 50,
+          page: 1
+        };
+      }
+      while (hasMoreData) {
+        const { data, total, cursor } = await this.$store.dispatch(
+          `${this.resource}/getList`,
+          params
+        )
+        allData.push(...data);
+        if (this.cursorPagination) {
+          hasMoreData = !!cursor;
+          params.pagination.cursor = cursor;
+        } else {
+          hasMoreData = total > allData.length;
+          params.pagination.page += 1;
+        }
+      }
 
       const csv = Papa.unparse(
-        data.map((item) => {
+        allData.map((item) => {
           /**
            * Remove nested object which is not supported on Papa
            */

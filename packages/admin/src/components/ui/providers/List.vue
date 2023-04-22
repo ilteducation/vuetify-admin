@@ -195,7 +195,10 @@ export default {
     /**
      * Use cursor type pagination.
      */
-    cursorPagination: Boolean,
+    cursorPagination: {
+      type: Boolean,
+      default: false,
+    },
     /**
      * Hide all header toolbar, so neither filters nor any create or export actions.
      */
@@ -484,6 +487,7 @@ export default {
           `${this.resource}/getList`,
           listParams
         );
+        console.log(res)
         if (this.cursorPagination) {
           let partial = res;
           while (res.data.length < itemsPerPage && res.cursor) {
@@ -550,6 +554,7 @@ export default {
         }
         this.cursorPage.set(page + 1, cursor);
       }
+      console.log(`New state ${total} ${this.cursorPagination}`)
 
       /**
        * Update state without cloning
