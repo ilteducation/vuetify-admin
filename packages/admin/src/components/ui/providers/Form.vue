@@ -1,5 +1,18 @@
 <template>
   <v-form ref="form" @submit.prevent="onSubmit">
+    <v-snackbar v-model="snackbar" close-on-content-click :color="color" multi-line timeout=60000>
+      <div class="text-subtitle-1 pb-2">Invalid input</div>
+      <p>{{ errorMessage }}</p>
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+      </v-snackbar>
     <!-- @slot All content form with all inner inputs. Model will be injected for each inputs. -->
     <slot></slot>
   </v-form>
@@ -57,6 +70,9 @@ export default {
   },
   data() {
     return {
+      snackbar: false,
+      errorMessage: null,
+      color: 'red',
       originalValue: this.value,
       formState: {
         edit: !!this.id,
@@ -107,7 +123,15 @@ export default {
       this.save(this.redirect);
     },
     async save(redirect) {
-      if (!this.$refs.form.validate()) {
+      const valid = this.$refs.form.validate();
+      if (!valid) {
+        this.$refs.form.inputs.forEach(e => {
+        if (e.errorBucket && e.errorBucket.length) {
+            this.snackbar = true;
+            this.errorMessage = `${e.label}: "${e.errorBucket[0]}"`;
+          }
+        }
+        );
         return;
       }
 
