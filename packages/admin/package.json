@@ -1,6 +1,6 @@
 {
   "name": "@ilteducation/vuetify-admin",
-  "version": "0.5.12",
+  "version": "0.5.13",
   "description": "SPA admin framework for Vue.js running on top of REST APIs, built on Vuetify",
   "main": "dist/admin.common.js",
   "module": "src/index.js",
