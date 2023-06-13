@@ -1,6 +1,6 @@
 {
   "name": "@ilteducation/vuetify-admin",
-  "version": "0.5.13",
+  "version": "0.5.14",
   "description": "SPA admin framework for Vue.js running on top of REST APIs, built on Vuetify",
   "main": "dist/admin.common.js",
   "module": "src/index.js",
@@ -52,12 +52,13 @@
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^3.2.2",
+    "json-2-csv": "^4.0.0",
     "lodash": "^4.17.15",
     "papaparse": "^5.3.0",
     "qs": "^6.9.4"
   },
   "engines": {
-    "node": "^16",
-    "pnpm": "^7"
+    "node": "^18",
+    "pnpm": "^8"
   }
 }

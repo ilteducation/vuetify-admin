@@ -13,7 +13,7 @@
 <script>
 import Resource from "../../../mixins/resource";
 import Button from "../../../mixins/button";
-import Papa from "papaparse";
+import { json2csv } from 'json-2-csv';
 
 /**
  * Action button for export all data from a list iterator, aka VaList.
@@ -86,29 +86,7 @@ export default {
         }
       }
 
-      const csv = Papa.unparse(
-        allData.map((item) => {
-          /**
-           * Remove nested object which is not supported on Papa
-           */
-          for (let prop in item) {
-            if (typeof item[prop] === "object") {
-              delete item[prop];
-            }
-          }
-          return item;
-        }),
-        {
-          quotes: false, //or array of booleans
-          quoteChar: '"',
-          escapeChar: '"',
-          delimiter: ",",
-          header: true,
-          newline: "\r\n",
-          skipEmptyLines: false, //or 'greedy',
-          columns: null, //or array of strings
-        }
-      );
+      const csv = await json2csv(allData);
 
       /**
        * Magic download
