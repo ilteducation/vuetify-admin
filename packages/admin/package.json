@@ -19,7 +19,7 @@
   "license": "MIT",
   "homepage": "https://www.okami101.io/vuetify-admin",
   "scripts": {
-    "build": "vue-cli-service build --name admin --target lib src/index.js",
+    "build": "vue-cli-service build --name admin --target lib src/index.js --openssl-legacy-provider",
     "prepublishOnly": "npm run build && node meta"
   },
   "vetur": {
@@ -52,13 +52,12 @@
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^3.2.2",
-    "json-2-csv": "^4.0.0",
+    "jsonexport": "^3.2.0",
     "lodash": "^4.17.15",
-    "papaparse": "^5.3.0",
     "qs": "^6.9.4"
   },
   "engines": {
-    "node": "^18",
+    "node": "^16",
     "pnpm": "^8"
   }
 }

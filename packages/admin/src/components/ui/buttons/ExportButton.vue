@@ -13,7 +13,7 @@
 <script>
 import Resource from "../../../mixins/resource";
 import Button from "../../../mixins/button";
-import { json2csv } from 'json-2-csv';
+import * as jsonexport from "jsonexport/dist"
 
 /**
  * Action button for export all data from a list iterator, aka VaList.
@@ -86,8 +86,7 @@ export default {
         }
       }
 
-      const csv = await json2csv(allData);
-
+      const csv = await jsonexport(allData);
       /**
        * Magic download
        */
