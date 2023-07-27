@@ -7,10 +7,15 @@
     :server-items-length="listState.total"
     :items-per-page="itemsPerPage"
     :hide-default-footer="hideDefaultFooter || disablePagination"
-    :footer-props="{
+    :footer-props="footer === undefined ? {
       'items-per-page-options': itemsPerPageOptions,
       showFirstLastPage: true,
       disableItemsPerPage,
+    } : {
+      'items-per-page-options': itemsPerPageOptions,
+      showFirstLastPage: false,
+      disableItemsPerPage,
+      pageText: '',
     }"
     @update:items-per-page="listState.reload"
     @update:page="listState.reload"
@@ -161,6 +166,10 @@ export default {
     filters: {
       type: Array,
       default: () => [],
+    },
+    footer: {
+      type: Object,
+      default: () => undefined,
     },
     /**
      * List of available selections of items per page.
