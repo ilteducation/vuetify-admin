@@ -7,7 +7,12 @@
     :server-items-length="listState.total"
     :items-per-page="itemsPerPage"
     :hide-default-footer="hideDefaultFooter || disablePagination"
-    :footer-props="{
+    :footer-props="cursorPagination ? {
+      'items-per-page-options': itemsPerPageOptions,
+      showFirstLastPage: false,
+      disableItemsPerPage,
+      pageText: '',
+    } : {
       'items-per-page-options': itemsPerPageOptions,
       showFirstLastPage: true,
       disableItemsPerPage,
