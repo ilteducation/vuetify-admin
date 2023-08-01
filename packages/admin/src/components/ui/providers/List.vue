@@ -7,7 +7,7 @@
     :server-items-length="listState.total"
     :items-per-page="itemsPerPage"
     :hide-default-footer="hideDefaultFooter || disablePagination"
-    :footer-props="changeFooter ? {
+    :footer-props="cursorPagination ? {
       'items-per-page-options': itemsPerPageOptions,
       showFirstLastPage: false,
       disableItemsPerPage,
@@ -166,10 +166,6 @@ export default {
     filters: {
       type: Array,
       default: () => [],
-    },
-    changeFooter: {
-      type: Boolean,
-      default: () => false,
     },
     /**
      * List of available selections of items per page.
