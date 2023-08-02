@@ -13,7 +13,8 @@
     "create": "Create new {resource}",
     "show": "Detail of {resource} {label}",
     "edit": "Edit {resource} {label}",
-    "not_found": "{resource} #{id} not found"
+    "not_found": "{resource} #{id} not found",
+    "noop": "Noop {resource}"
   },
   "actions": {
     "list": "List",
@@ -33,7 +34,8 @@
     "save": "Save",
     "save_and_add": "Save and add",
     "save_and_show": "Save and show",
-    "save_and_edit": "Save and edit"
+    "save_and_edit": "Save and edit",
+    "noop": "Noop"
   },
   "messages": {
     "created": "New {resource} successfully created !",

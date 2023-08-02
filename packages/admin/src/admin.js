@@ -64,14 +64,14 @@ export default class VuetifyAdmin {
         /**
          * Get valid routes
          */
-        let routes = ["list", "show", "create", "edit"].filter((name) => {
+        let routes = ["list", "show", "create", "edit", "noop"].filter((name) => {
           return !r.routes || r.routes.includes(name);
         });
 
         /**
          * Get valid actions
          */
-        let actions = ["list", "show", "create", "edit", "delete"].filter(
+        let actions = ["list", "show", "create", "edit", "delete", "noop"].filter(
           (name) => {
             if ((r.actions || []).length) {
               return r.actions.includes(name);
