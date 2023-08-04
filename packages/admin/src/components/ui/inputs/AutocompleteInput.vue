@@ -1,5 +1,5 @@
 <template>
-  <component
+    <component
     :is="taggable ? 'v-combobox' : 'v-autocomplete'"
     v-bind="commonProps"
     :filled="filled"
@@ -55,6 +55,7 @@ export default {
      * Enable taggable mode. Transform autocomplete into combobox.
      */
     taggable: Boolean,
+    item: Object,
   },
   data() {
     return {
@@ -90,7 +91,7 @@ export default {
 
       this.items = [
         ...(this.items || []),
-        ...((await this.fetchChoices(val)) || []),
+        ...((await this.fetchChoices(val, this.item)) || []),
       ];
     },
   },

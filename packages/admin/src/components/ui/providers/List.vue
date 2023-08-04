@@ -43,6 +43,7 @@
             v-model="associationId"
             hide-details
             :filled="false"
+            :item="item"
           ></va-autocomplete-input>
           <va-associate-button type="submit"></va-associate-button>
         </form>
@@ -157,6 +158,7 @@ export default {
     };
   },
   props: {
+    item: Object,
     /**
      * Exposed filters, editable through advanced filter form, update URL query string if not disabled.
      * Sent to your data provider inside `filter` params.
