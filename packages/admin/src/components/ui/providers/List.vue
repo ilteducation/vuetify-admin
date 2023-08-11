@@ -43,7 +43,7 @@
             v-model="associationId"
             hide-details
             :filled="false"
-            :item="item"
+            :association-search-filters="associationSearchFilters"
           ></va-autocomplete-input>
           <va-associate-button type="submit"></va-associate-button>
         </form>
@@ -158,7 +158,6 @@ export default {
     };
   },
   props: {
-    item: Object,
     /**
      * Exposed filters, editable through advanced filter form, update URL query string if not disabled.
      * Sent to your data provider inside `filter` params.
@@ -186,6 +185,13 @@ export default {
           ]
         );
       },
+    },
+    /**
+     * List of filters on the association search
+     */
+    associationSearchFilters: {
+      type: Object,
+      default: () => {},
     },
     /**
      * Disable real time update of URL query string on any browsing action as pagination, sorting, filtering, etc.

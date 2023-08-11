@@ -1,5 +1,5 @@
 <template>
-    <component
+  <component
     :is="taggable ? 'v-combobox' : 'v-autocomplete'"
     v-bind="commonProps"
     :filled="filled"
@@ -55,7 +55,13 @@ export default {
      * Enable taggable mode. Transform autocomplete into combobox.
      */
     taggable: Boolean,
-    item: Object,
+    /**
+     * List of filters on the association search
+     */
+    associationSearchFilters: {
+      type: Object,
+      default: () => [],
+    },
   },
   data() {
     return {
@@ -91,7 +97,7 @@ export default {
 
       this.items = [
         ...(this.items || []),
-        ...((await this.fetchChoices(val, this.item)) || []),
+        ...((await this.fetchChoices(val, this.associationSearchFilters)) || []),
       ];
     },
   },

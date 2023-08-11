@@ -72,7 +72,7 @@ export default {
 
       return input;
     },
-    async fetchChoices(search = null, item) {
+    async fetchChoices(search = null, associationSearchFilters) {
       if (!this.reference || this.loading) {
         return;
       }
@@ -95,8 +95,7 @@ export default {
           return { by, desc: this.sortDesc[index] };
         }),
         filter: {
-          ...{realm: item.realms[0]},
-          ...{'accessRules.subscriptionType': item.subscriptionTypes[0]},
+          ...associationSearchFilters,
           ...this.filter,
           ...(this.searchQuery && search && { [this.searchQuery]: search }),
         },
