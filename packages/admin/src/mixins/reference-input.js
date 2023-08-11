@@ -72,7 +72,7 @@ export default {
 
       return input;
     },
-    async fetchChoices(search = null, associationSearchFilters) {
+    async fetchChoices(search = null) {
       if (!this.reference || this.loading) {
         return;
       }
@@ -95,7 +95,6 @@ export default {
           return { by, desc: this.sortDesc[index] };
         }),
         filter: {
-          ...associationSearchFilters,
           ...this.filter,
           ...(this.searchQuery && search && { [this.searchQuery]: search }),
         },

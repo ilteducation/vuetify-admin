@@ -43,7 +43,7 @@
             v-model="associationId"
             hide-details
             :filled="false"
-            :association-search-filters="associationSearchFilters"
+            :filter="associationSearchFilters"
           ></va-autocomplete-input>
           <va-associate-button type="submit"></va-associate-button>
         </form>

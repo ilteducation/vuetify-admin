@@ -55,13 +55,6 @@ export default {
      * Enable taggable mode. Transform autocomplete into combobox.
      */
     taggable: Boolean,
-    /**
-     * List of filters on the association search
-     */
-    associationSearchFilters: {
-      type: Object,
-      default: () => [],
-    },
   },
   data() {
     return {
@@ -97,7 +90,7 @@ export default {
 
       this.items = [
         ...(this.items || []),
-        ...((await this.fetchChoices(val, this.associationSearchFilters)) || []),
+        ...((await this.fetchChoices(val)) || []),
       ];
     },
   },
