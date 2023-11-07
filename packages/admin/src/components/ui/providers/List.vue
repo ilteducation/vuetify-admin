@@ -27,7 +27,7 @@
         <div>
           <!-- @slot Custom bulk actions, ideal place for VaBulkActionButton. -->
           <slot name="bulk.actions"></slot>
-          <va-bulk-delete-button></va-bulk-delete-button>
+          <va-bulk-delete-button v-if="!disableDelete"></va-bulk-delete-button>
         </div>
       </v-toolbar>
       <v-toolbar flat v-else>
@@ -209,6 +209,13 @@ export default {
      * Use cursor type pagination.
      */
     cursorPagination: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * Disable the bulk delete action.
+     */
+    disableDelete: {
       type: Boolean,
       default: false,
     },
