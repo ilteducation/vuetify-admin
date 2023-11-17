@@ -29,9 +29,11 @@ export default {
     /**
      * Data object to send on `updateMany` data provider method.
      * Contains the resource properties to update.
+     * OR
+     * An async function that takes the items[] as an argument
      */
     action: {
-      type: Object,
+      type: [Object, Function],
       required: true,
     },
   },
@@ -39,10 +41,14 @@ export default {
     async onBulkUpdate() {
       let value = this.value || this.listState.selected;
 
-      await this.$store.dispatch(`${this.listState.resource}/updateMany`, {
-        ids: value.map(({ id }) => id),
-        data: this.action,
-      });
+      if (typeof this.action === "function") {
+        await this.action(value);
+      } else {
+        await this.$store.dispatch(`${this.listState.resource}/updateMany`, {
+          ids: value.map(({ id }) => id),
+          data: this.action,
+        });
+      }
 
       /**
        * Cleanup selected elements
