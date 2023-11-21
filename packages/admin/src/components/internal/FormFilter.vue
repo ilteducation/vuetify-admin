@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form @submit.prevent>
     <v-row>
       <v-col sm="auto" v-for="(item, index) in filters" :key="index">
         <div class="d-flex align-center">
