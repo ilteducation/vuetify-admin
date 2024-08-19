@@ -40,6 +40,16 @@ export default {
   mixins: [Input, Editable],
   props: {
     /**
+     * Name of date format to use for textfield input.
+     * Must be predefined on your VueI18n plugin.
+     */
+    format: {
+      type: String,
+      default() {
+        return this.$admin.options.dateFormat;
+      },
+    },
+    /**
      * Date on ISO format to be edited.
      * @model
      */
@@ -55,16 +65,6 @@ export default {
     filled: {
       type: Boolean,
       default: true,
-    },
-    /**
-     * Name of date format to use for textfield input.
-     * Must be predefined on your VueI18n plugin.
-     */
-    format: {
-      type: String,
-      default() {
-        return this.$admin.options.dateFormat;
-      },
     },
   },
   data() {
