@@ -99,6 +99,7 @@
           text
           :options="listState.options"
           :filter="getCurrentFilter"
+          :cursor-pagination="cursorPagination"
         ></va-export-button>
       </v-toolbar>
     </template>
@@ -507,7 +508,6 @@ export default {
           `${this.resource}/getList`,
           listParams
         );
-        console.log(res)
         if (this.cursorPagination) {
           let partial = res;
           while (res.data.length < itemsPerPage && res.cursor) {
@@ -516,7 +516,7 @@ export default {
               pagination: {
                 cursor: partial.cursor,
                 limit: itemsPerPage - res.data.length,
-              }
+              },
             };
             partial = await this.$store.dispatch(
               `${this.resource}/getList`,
@@ -527,7 +527,7 @@ export default {
           }
         }
         return res;
-      }
+      };
 
       if (!this.disablePagination) {
         if (this.cursorPagination) {
@@ -540,8 +540,8 @@ export default {
                 pagination: {
                   cursor: this.cursorPage.get(hasPageCursor),
                   limit: itemsPerPage,
-                }
-              }
+                },
+              };
               const { cursor } = await getListData(listParams);
               hasPageCursor += 1;
               this.cursorPage.set(hasPageCursor, cursor);
@@ -574,7 +574,6 @@ export default {
         }
         this.cursorPage.set(page + 1, cursor);
       }
-      console.log(`New state ${total} ${this.cursorPagination}`)
 
       /**
        * Update state without cloning
