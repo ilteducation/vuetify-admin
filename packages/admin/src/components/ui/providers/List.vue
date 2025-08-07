@@ -515,7 +515,7 @@ export default {
               ...listParams,
               pagination: {
                 cursor: partial.cursor,
-                size: itemsPerPage - res.data.length,
+                limit: itemsPerPage - res.data.length,
               },
             };
             partial = await this.$store.dispatch(
@@ -539,7 +539,7 @@ export default {
                 ...params,
                 pagination: {
                   cursor: this.cursorPage.get(hasPageCursor),
-                  size: itemsPerPage,
+                  limit: itemsPerPage,
                 },
               };
               const { cursor } = await getListData(listParams);
@@ -550,7 +550,7 @@ export default {
 
           params.pagination = {
             cursor: this.cursorPage.get(page),
-            ...(!this.disableItemsPerPage && { size: itemsPerPage }),
+            ...(!this.disableItemsPerPage && { limit: itemsPerPage }),
           };
         } else {
           params.pagination = {
